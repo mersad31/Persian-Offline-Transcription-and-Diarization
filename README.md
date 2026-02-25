@@ -30,11 +30,11 @@ An end-to-end, privacy-focused tool for transcribing Persian (Farsi) audio and i
    ```bash
    git clone [https://github.com/your-username/persian-diarization.git](https://github.com/your-username/persian-diarization.git)
    cd persian-diarization
-
+   ```
 2. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
-   
+   ```
 3. **Model Setup (Two Options):**
    
    **Option A: Manual/Local (Offline)**
@@ -48,17 +48,17 @@ An end-to-end, privacy-focused tool for transcribing Persian (Farsi) audio and i
 
     If you want the app to download the models automatically from the cloud, set your Hugging Face Token as an environment variable:
       ### Linux/Mac
-           
-           export HF_TOKEN="your_token_here"
-      
+      ```bash     
+      export HF_TOKEN="your_token_here"
+      ```
       ### Windows (PowerShell)
-           
-          $env:HF_TOKEN="your_token_here"
-     
+      ```bash     
+      $env:HF_TOKEN="your_token_here"
+      ```
 ### Running the App
-    
-    streamlit run app.py
-
+```bash    
+streamlit run app.py
+```
 ## 🛠️ Tech Stack
  
   Component	        Technology
