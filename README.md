@@ -35,13 +35,26 @@ An end-to-end, privacy-focused tool for transcribing Persian (Farsi) audio and i
    ```bash
    pip install -r requirements.txt
    
-3. **Model Setup:**
+3. **Model Setup (Two Options):**
    
-   **Ensure your local models are placed in the ./models/ directory:**
+   **Option A: Manual/Local (Offline)**
+   
+   **Place your pre-downloaded models in the ./models/ directory:**
 
    * Faster-Whisper model: ./models/whisper
    * SpeechBrain model: ./models/speechbrain 
 
+   **Option B: Automatic Download (Hugging Face)**
+
+    If you want the app to download the models automatically from the cloud, set your Hugging Face Token as an environment variable:
+      ### Linux/Mac
+           
+           export HF_TOKEN="your_token_here"
+      
+      ### Windows (PowerShell)
+           
+          $env:HF_TOKEN="your_token_here"
+     
 ### Running the App
     
     streamlit run app.py
