@@ -1,90 +1,87 @@
 # 🎙️ Persian Offline Transcription & Diarization
 
-An end-to-end, privacy-focused tool for transcribing Persian (Farsi) audio and identifying different speakers (Diarization). This project leverages state-of-the-art AI models to provide high-accuracy text and speaker labeling completely offline.
+A Streamlit app that turns Persian (Farsi) audio into text **and** labels who said what, entirely on your own machine.
 
 ---
 
-## ✨ Key Features
+## 🎯 The Problem
 
-* **🇮🇷 Persian Language Support:** Optimized for Farsi transcription using OpenAI's Whisper (via Faster-Whisper).
-* **👥 Speaker Diarization:** Automatically separates and labels different voices (Speaker A, Speaker B, etc.).
-* **🔒 Offline Processing:** No data leaves your machine. Perfect for sensitive or confidential recordings.
-* **📂 Multiple Export Formats:** Download your results as **.TXT** transcripts or **.SRT** subtitle files.
-* **📱 Modern UI:** Built with **Streamlit**, featuring a chat-like interface for reading conversations.
-* **↔️ RTL Optimization:** Properly handles Right-to-Left (RTL) text display for Farsi.
+Meetings, interviews and calls often contain sensitive speech. Cloud transcription services send that audio to a third party, and many of them handle Persian and multiple speakers poorly. This tool keeps everything local.
 
----
+## 💡 The Approach
+
+1. **Transcribe** with Faster-Whisper (`language="fa"`, optional VAD filter).
+2. **Embed** the audio in sliding windows with a SpeechBrain speaker-embedding model.
+3. **Cluster** the windows (agglomerative clustering) into the number of speakers you choose.
+4. **Merge** the transcript segments with the speaker labels and show them as a chat-like conversation.
+
+## ✨ Features
+
+- 🇮🇷 Persian transcription (Faster-Whisper)
+- 👥 Speaker diarization (Speaker A, Speaker B, ...), up to 10 speakers
+- 🔒 Fully offline: models are loaded from local folders
+- 📂 Input: `mp3`, `wav`, `m4a`, `ogg`
+- 💾 Export: `.txt` transcript and `.srt` subtitles
+- ↔️ Right-to-left display for Persian
+- 🎚️ Adjustable window and hop size for diarization
+
+<!-- TODO: add a screenshot of the chat-style result, e.g. ![Demo](docs/demo.png) -->
+
+## 🧰 Tech Stack
+
+| Component | Technology |
+|---|---|
+| UI | Streamlit |
+| Transcription | Faster-Whisper |
+| Speaker embeddings | SpeechBrain |
+| Clustering | scikit-learn (agglomerative clustering) |
+| Audio handling | PyDub, TorchAudio, FFmpeg |
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-* **Python:** 3.9 or higher.
-* **FFmpeg:** Required for audio processing.
-    * *Ubuntu:* `sudo apt install ffmpeg`
-    * *Mac:* `brew install ffmpeg`
-    * *Windows:* Download from [ffmpeg.org](https://ffmpeg.org/) and add to PATH.
 
-### Installation
+- Python 3.9+
+- FFmpeg on your `PATH`
+  - Ubuntu: `sudo apt install ffmpeg`
+  - macOS: `brew install ffmpeg`
+  - Windows: download from [ffmpeg.org](https://ffmpeg.org/)
 
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/your-username/persian-diarization.git](https://github.com/your-username/persian-diarization.git)
-   cd persian-diarization
-   ```
-2. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. **Model Setup (Two Options):**
-   
-   **Option A: Manual/Local (Offline)**
-   
-   **Place your pre-downloaded models in the ./models/ directory:**
+### Install
 
-   * Faster-Whisper model: ./models/whisper
-   * SpeechBrain model: ./models/speechbrain 
+```bash
+git clone https://github.com/mersad31/Persian-Offline-Transcription-and-Diarization.git
+cd Persian-Offline-Transcription-and-Diarization
+pip install -r requirement.txt
+```
 
-   **Option B: Automatic Download (Hugging Face)**
+### Models
 
-    If you want the app to download the models automatically from the cloud, set your Hugging Face Token as an environment variable:
-      ### Linux/Mac
-      ```bash     
-      export HF_TOKEN="your_token_here"
-      ```
-      ### Windows (PowerShell)
-      ```bash     
-      $env:HF_TOKEN="your_token_here"
-      ```
-### Running the App
-```bash    
+The app loads models from local folders and does **not** download them. Download them once, then place them like this:
+
+```text
+models/
+├── whisper/        # a Faster-Whisper (CTranslate2) model folder
+└── speechbrain/    # a SpeechBrain speaker-embedding model folder
+```
+
+### Run
+
+```bash
 streamlit run app.py
 ```
-## 🛠️ Tech Stack
- 
-  Component	        Technology
-  Frontend	        Streamlit
-  Transcription	    Faster-Whisper
-  Diarization	      SpeechBrain
-  Audio Engine	    PyDub & TorchAudio
-  Clustering	      Scikit-Learn (K-Means)
 
-## ⚡High-End Hardware Scaling
+## ⚡ Scaling Up (with a strong GPU)
 
- If you have access to a powerful GPU (e.g., NVIDIA RTX 30/40 series), you can enhance this system by:
-
-  1. Large-v3 Model: Upgrade to the large-v3 Whisper model for 15-20% better accuracy in complex Persian vocabulary.
-  2. WhisperX Integration: Use forced alignment for word-level timestamps (perfect for high-end video subtitling).
-  3. DeepFilterNet: Add a neural noise-reduction layer to clean noisy field recordings before transcription.
-  4. LLM Post-Correction: Use a local LLM (like Llama-3-Persian) to fix punctuation and grammatical errors automatically.
+- Use a larger Whisper model for harder Persian vocabulary
+- Add forced alignment (e.g. WhisperX) for word-level timestamps
+- Add neural noise reduction for noisy recordings
+- Post-correct punctuation with a local LLM
 
 ## 📝 License
 
-  This project is licensed under the MIT License.
+MIT License. See [LICENSE](LICENSE).
 
 ## 🙏 Acknowledgments
 
-  * OpenAI for the Whisper architecture.
-  * SpeechBrain team for speaker recognition tools.
-  * The Streamlit community for the amazing web framework.
-
-  
+OpenAI Whisper, the SpeechBrain team and the Streamlit community.
